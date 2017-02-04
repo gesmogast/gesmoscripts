@@ -1,0 +1,7 @@
+---
+- hosts: testservers
+  tasks:
+
+  - name: Start nginx
+    service: name=nginx state=started
+    sudo: yes

@@ -1,0 +1,12 @@
+---
+- hosts: alltest
+  remote_user: root
+
+  tasks:
+#  - name: check is webserver running?
+#    shell: curl -X GET http://{{ ansible_eth0.ipv4.address }}
+#    shell: curl http://localhost
+   - name: check is service nginx installed
+     shell: "service nginx status"
+     register: service_status
+     ignore_errors: yes

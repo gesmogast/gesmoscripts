@@ -1,0 +1,36 @@
+# Add client to bacula
+---
+- hosts: backup
+  remote_user: root
+  tasks:
+  
+  - name: add client to bacula clients file
+    blockinfile:
+      dest: /etc/bacula/conf.d/clients.conf
+      block: |
+        Client {
+        Name = {{ backup_hostname }}-fd
+        Password = quakequake
+        Address = {{ backup_ipaddress }}
+        FDPort = 9102
+  	Catalog = MyCatalog
+        File Retention = 30 days
+        Job Retention = 2 months
+        }
+
+  - name: add job to bacula jobs file
+    blockinfile:
+      dest: /etc/bacula/conf.d/jobs.conf
+      block: |
+        Job {
+  	Name = "Backup {{backup_hostname}}"
+  	Type = Backup
+  	Level = Full
+  	Client = {{backup_hostname}}-fd
+  	FileSet = "Ansible Test Big File"
+  	Schedule = WeeklyCycle
+  	Storage = File
+  	Pool = Backup1C
+  	Messages = Standard
+        }  
+

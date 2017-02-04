@@ -1,0 +1,4 @@
+---
+- hosts: testservers
+  tasks:
+  - debug: msg={{ansible_domain}}

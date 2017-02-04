@@ -1,0 +1,14 @@
+---
+- hosts: webservers
+  remote_user: root
+
+  tasks:
+  - name: Check package 1
+    shell: dpkg -l | grep tcpdump
+    register: tcpdump_deb
+  - name: Check if tcpdump installed
+    debug: msg="Installed"
+    when: "'tcpdump' in tcpdump_deb.stdout"
+  - name: Check if tcpdump is not installed
+    debug: msg="Not installed"
+    when: "not 'tcpdump' in tcpdump_deb.stdout"

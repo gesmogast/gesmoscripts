@@ -1,0 +1,7 @@
+---
+- hosts: web-01
+  remote_user: root
+
+  tasks:
+  - name: install nginx
+    apt: name=nginx state=latest

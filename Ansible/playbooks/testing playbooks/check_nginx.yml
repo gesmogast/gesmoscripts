@@ -1,0 +1,6 @@
+---
+- hosts: testservers
+  tasks:
+
+  - name: Check status nginx service
+    service: name=nginx state=running

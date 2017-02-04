@@ -1,0 +1,9 @@
+---
+- hosts: testservers
+  remote_user: root
+
+  tasks:
+  - name: Install mc package
+    apt: name=mc update_cache=yes
+    sudo: yes
+ 

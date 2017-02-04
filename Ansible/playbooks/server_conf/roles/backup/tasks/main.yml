@@ -1,0 +1,64 @@
+# Configuring backup
+---
+# Backup configuration
+- name: copy credentials file to mount cifs shares
+  copy: src=/etc/ansible/playbooks/server_conf/roles/backup/files/smbcredentials dest=/home/smbcredentials
+
+- name: create local mountpoint folder
+  file: path=/mnt/backup state=directory
+
+- name: test fstab if exists mountpoint string
+  shell: grep "^//srv-bac-01/Compression" /etc/fstab
+  register: fstab_grep
+  ignore_errors: True
+
+- name: add mount data to /etc/fstab
+  lineinfile: dest=/etc/fstab line="//srv-bac-01/Compression /mnt/backup cifs   rw,credentials=/home/smbcredentials,iocharset=utf8      0       0"  
+  when: fstab_grep.stdout == ""
+
+- name: restart machine
+  shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+  async: 1
+  poll: 0
+  ignore_errors: true
+
+- name: waiting for server to come back
+  local_action: wait_for host={{ inventory_hostname }} port=22 delay=30 timeout=300 state=started
+  sudo: false
+
+- name: create server directory in the mountpoint
+  file: path=/mnt/backup/{{ ansible_hostname }} state=directory
+
+- name: create backup
+  shell: tar -cf /mnt/backup/{{ ansible_hostname }}/backup-etc.tar /etc
+
+# Backup configuration
+- name: install bacula-client
+  apt: name=bacula-client state=latest
+
+- name: push bacula-configuration
+  template: src=bacula-fd.conf.j2 dest=/etc/bacula/bacula-fd.conf mode=0640 owner=root group=root
+  notify:
+    - restart bacula-fd
+
+#- name: local action edit clients file
+#  tags:
+#    - tag1
+#  local_action: command echo "aaaaaaaaaa" >> /home/321.txt
+#  delegate_to: localhost
+ 
+#"Client {
+#  Name = srv-bac-02-fd
+#  Password = quakequake
+#  Address = 10.12.1.13
+#  FDPort = 9102
+#  Catalog = MyCatalog
+#  File Retention = 30 days
+#  Job Retention = 2 months
+#  }" > /etc/ansible/playbooks/server_conf/roles/backup/files/clients.conf 
+
+#- name: add job to bacula jobs file
+
+#- name: create cron task to backup /etc
+#  cron: name="backup settings" minute="10" hour="21" job="/bin/tar -cf /mnt/backup/{{ ansible_hostname }}/$(date '+%d-%b-%Y').tar /etc"
+

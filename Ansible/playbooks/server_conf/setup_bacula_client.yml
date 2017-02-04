@@ -1,0 +1,13 @@
+# setup bacula client
+---
+- hosts: wiki1
+  vars:
+    backup_ipaddress: "10.12.1.205"
+    backup_hostname: "srv-ftp-01-fd"
+  remote_user: root
+  tasks:
+  - name: add client to bacula clients file
+    lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Client {\n  Name = {{ backup_hostname }}\n  Password = quakequake\n  Address = {{ backup_ipaddress }}\n  FDPort = 9102\n  Catalog = MyCatalog\n  File Retention = 30 days\n  Job Retention = 2 months\n}"
+
+  - name: add job to bacula jobs file
+    lineinfile: dest=/etc/bacula/conf.d/jobs.conf line='Job {\n  Name = "Backup {{ backup_hostname }}"\n  Type = Backup\n  Level = Full\n  Client = {{ backup_hostname }}\n  FileSet = "Simple Backup"\n  Schedule = WeeklyCycle\n  Storage = File\n  Pool = Backup1C\n  Messages = Standard\n}'

@@ -1,0 +1,10 @@
+---
+- hosts: testservers
+  remote_user: root
+
+  tasks:
+  - name: Check package 1
+    shell: dpkg -l | grep tcpdump
+    register: tcpdump_deb
+  - name: Check if tcpdump installed
+    debug: msg="test"

@@ -1,0 +1,12 @@
+# preconfiguration of linux server
+
+- hosts: alltest
+  pre_tasks:
+    set_fact:
+      backup_ipaddress: "{{ ansible_eth0.ipv4.address }}"
+      backup_hostname: "{{ ansible_hostname }}"
+
+  roles:
+    - preconf
+    - backup
+

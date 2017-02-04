@@ -1,0 +1,12 @@
+---
+- hosts: testservers
+  tasks:
+
+  - name: Restart servers
+    command: shutdown -r now "REBOOT"
+    async: 0
+    poll: 0
+    ignore_errors: true
+  - name: wait for server to come back
+    local_action: wait_for host={{ inventory_hostname }} state=started
+    sudo: false

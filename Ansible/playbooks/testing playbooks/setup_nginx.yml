@@ -1,0 +1,10 @@
+---
+- hosts: testservers
+  tasks:
+
+  - name: Install nginx package
+    apt: name=nginx update_cache=yes
+    sudo: yes
+  - name: Start nginx service
+    service: name=nginx state=started
+    sudo: yes

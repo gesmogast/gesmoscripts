@@ -1,0 +1,11 @@
+---
+- hosts: webservers
+  remote_user: root
+
+  tasks:
+  - name: install htop and tcpdump
+    apt: name={{ item }} state=absent
+    with_items:
+      - htop
+      - tcpdump
+    become: yes

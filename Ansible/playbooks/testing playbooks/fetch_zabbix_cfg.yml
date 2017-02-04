@@ -1,0 +1,7 @@
+---
+- hosts: testservers
+  remote_user: root
+
+  tasks:
+  - name: Fetch zabbix config
+    fetch: src=/etc/zabbix/zabbix_agentd.conf dest=/tmp/zabbx_agentd-{{ ansible_hostname }}.conf flat=yes

@@ -1,0 +1,11 @@
+# remove nginx
+
+- name: NGINX | stop nginx
+  service:
+    name: nginx
+    state: stopped
+
+- name: NGINX | remove nginx
+  apt:
+    name: nginx
+    state: absent

@@ -1,0 +1,11 @@
+---
+- hosts: wiki1
+  remote_user: root
+
+  tasks:
+  - name: install htop
+    apt: name={{ item }} state=present
+    with_items:
+      - htop
+      - tcpdump
+    sudo: yes

@@ -1,0 +1,14 @@
+---
+- hosts: all
+  tasks:
+  - name: Querying dpkg list for tcpdump package
+    shell: dpkg -l | grep tcpdump
+    register: tcpdump_deb
+
+  - name: Check if tcpdump installed on hosts
+    debug: msg="test1"
+    when: "'tcpdump' in tcpdump_deb.stdout"
+
+  – name: Check if tcpdump is not installed on the remote host
+    debug: msg="test2"
+    when: not 'tcpdump' in tcpdump_deb.stdout

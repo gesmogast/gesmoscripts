@@ -1,0 +1,27 @@
+- hosts: backup
+
+- name: add client to bacula clients file
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Client {"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Name = {{ backup_hostname }}-fd"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Password = quakequake"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Address = {{ backup_ipaddress }}"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="FDPort = 9102"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Catalog = MyCatalog"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="File Retention = 30 days"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Job Retention = 2 months"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="}"
+
+- name: add job to bacula jobs file
+  hosts: backup
+  #delegate_to: 10.12.1.110
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Job {"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line='Name = "Backup {{backup_hostname}}"'
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Type = Backup"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Level = Full"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Client = {{backup_hostname}}-fd"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line='FileSet = "Ansible Test Big File"'
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Schedule = WeeklyCycle"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Storage = File"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Pool = Backup1C"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="Messages = Standard"
+  lineinfile: dest=/etc/bacula/conf.d/jobs.conf line="}"

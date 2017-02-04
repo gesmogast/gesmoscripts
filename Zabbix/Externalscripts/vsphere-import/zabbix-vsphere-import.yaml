@@ -1,0 +1,61 @@
+---
+vsphere:
+  hostname: name
+
+vpoller:
+  endpoint: tcp://zbx-proxy-ip:10123
+  retries: 3
+  timeout: 3000
+
+zabbix:
+  hostname: http://zabbix-name
+  username: zabbix
+  password: password
+
+  vsphere_object_datacenter:
+    proxy: zabbix-proxy
+    templates:
+      - Template VMware vSphere Datacenter - vPoller Native
+    macros:
+      VSPHERE.HOST: ip
+    groups:
+      - Datacenters
+      
+  vsphere_object_clusters_as_zabbix_host:
+    proxy: proxy-name
+    templates:
+      - Template VMware vSphere Clusters - vPoller Native
+    macros:
+      VSPHERE.HOST: ip
+    groups:
+      - Clusters
+      
+  vsphere_object_host:
+    proxy: proxy-name
+    templates:
+      - Template VMware vSphere Hypervisor - vPoller Native
+    macros:
+      VSPHERE.HOST: ip
+    groups:
+      - Hypervisors
+
+  vsphere_object_vm:
+    ignore_vm: # any vsphere VM name matching the following regex patterns
+               # will not be imported, use .* with the -d option to remove all 
+               # vpoller-imported hosts
+     - ^Example-\d
+     - ^Another Example$
+    templates:
+      - Template VMware vSphere Virtual Machine - vPoller Native
+    macros:
+      VSPHERE.HOST: ip
+    groups:
+      - Virtual Machines
+
+  vsphere_object_datastore:
+    templates:
+      - Template VMware vSphere Datastore - vPoller Native
+    macros:
+      VSPHERE.HOST: ip
+    groups:
+      - Datastores

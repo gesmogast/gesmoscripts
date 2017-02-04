@@ -1,0 +1,95 @@
+# Pre-configuration tasks for servers
+# Installing common utilites, zabbix-agent, webmin, configuring backup
+---
+# tasks file for server_preconf
+
+- name: install some stuff
+  apt: name={{item}} state=latest update_cache=yes
+  with_items:
+       - sudo
+       - htop
+       - mc
+       - tcpdump
+       - sudo
+       - aptitude
+       - ntp
+       - ntpdate
+       - samba
+       - cifs-utils
+
+#Installing Zabbix-agent
+#- name: download zabbix-repo package
+#  get_url: url=http://repo.zabbix.com/zabbix/3.0/debian/pool/main/z/zabbix-release/zabbix-release_3.0-1+jessie_all.deb dest=/tmp/zabbix-repo.deb
+#- name: install zabbix-repo package
+#  apt: deb=/tmp/zabbix-repo.deb
+#- name: update apt cache
+#  apt: update_cache=yes cache_valid_time=3600
+
+- name: install and configure zabbix-agent
+  apt: name=zabbix-agent state=latest update_cache=yes
+
+# Changing server name in zabbix-agent config
+- replace: dest=/etc/zabbix/zabbix_agentd.conf regexp='(Server=\d+.\d+.\d+.\d+)' replace='Server=10.12.1.99' validate=''
+- replace: dest=/etc/zabbix/zabbix_agentd.conf regexp='(Hostname=.+)' replace='Hostname= {{ ansible_fqdn }}' validate=''
+  notify:
+    - restart zabbix-agent  
+
+# Installation of Webmin
+- name: install dependencies of webmin
+  apt: name={{item}} state=installed update_cache=yes
+  with_items:
+       - perl
+       - libnet-ssleay-perl
+       - openssl
+       - libauthen-pam-perl
+       - libpam-runtime
+       - libio-pty-perl
+       - apt-show-versions
+
+- name: download webmin package
+  get_url: url=http://prdownloads.sourceforge.net/webadmin/webmin_1.801_all.deb dest=/tmp/webmin.deb
+  register: result
+  ignore_errors: True
+
+- name: install webmin
+  apt: deb=/tmp/webmin.deb
+  when: result|success
+
+- name: Remove temp files
+  command: rm /tmp/webmin.deb
+  when: result|success
+
+# Backup configuration
+#- name: copy credentials file to mount cifs shares
+#  copy: src=/etc/ansible/playbooks/server_conf/roles/preconf/files/smbcredentials dest=/home/smbcredentials
+
+#- name: create local mountpoint folder
+#  file: path=/mnt/backup state=directory
+
+#- name: add mount data to /etc/fstab
+#  lineinfile: dest=/etc/fstab line="//srv-bac-01/Compression /mnt/backup cifs   rw,credentials=/home/smbcredentials,iocharset=utf8      0       0"  
+
+#- name: mount backup share
+#  mount: name=/mnt/backup src=//srv-bac-01/Compression fstype="cifs" opts=rw,credentials="/home/smbcredentials" state=present
+#  sudo_user: root
+#  sudo: yes
+
+#- name: restart machine
+#  shell: sleep 2 && shutdown -r now "Ansible updates triggered"
+#  async: 1
+#  poll: 0
+#  ignore_errors: true
+
+#- name: waiting for server to come back
+#  local_action: wait_for host={{ inventory_hostname }} port=22 delay=30 timeout=300 state=started
+#  sudo: false
+
+#- name: create server directory in the mountpoint
+#  file: path=/mnt/backup/{{ ansible_hostname }} state=directory
+
+#- name: create backup
+#  shell: tar -cf /mnt/backup/{{ ansible_hostname }}/backup-etc.tar /etc
+
+#- name: create cron task to backup /etc
+#  cron: name="backup settings" minute="50" hour="16" job="tar cf /mnt/backup/{{ ansible_hostname }}/$(date '+%d-%b-%Y').tar /etc"
+

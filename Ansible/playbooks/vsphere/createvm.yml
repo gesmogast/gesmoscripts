@@ -1,0 +1,45 @@
+# Create a new VM on an ESX server
+# Returns changed = False when the VM already exists
+# Returns changed = True and a adds ansible_facts from the new VM
+# State will set the power status of a guest upon creation. Use powered_on to create and boot.
+# Options ['state', 'vm_extra_config', 'vm_disk', 'vm_nic', 'vm_hardware', 'esxi'] are required together
+# Note: vm_floppy support added in 2.0
+
+  - hosts: vmware
+
+  - vsphere_guest:
+    vcenter_hostname: srv-vcenter-01.interfarmax.local
+    username: azbirovskiy
+    password: SENbonsakura99
+    guest: testvm-deb
+    state: powered_on
+    vm_extra_config:
+      vcpu.hotadd: yes
+      mem.hotadd:  yes
+      notes: This is a test VM
+      folder: testvm
+    vm_disk:
+      disk1:
+        size_gb: 10
+        type: thin
+        datastore: datastore1_4
+        # VMs can be put into folders. The value given here is either the full path
+        # to the folder (e.g. production/customerA/lamp) or just the last component
+        # of the path (e.g. lamp):
+        folder: testvm
+    vm_nic:
+      nic1:
+        type: vmxnet3
+        network: VM Network
+        network_type: standard
+    vm_hardware:
+      memory_mb: 512
+      num_cpus: 1
+      osid: debian64Guest
+      scsi: paravirtual
+      vm_cdrom:
+        type: "iso"
+        iso_path: "Dis1/debian-8.6.0-amd64-netinst.iso"
+    esxi:
+      datacenter: IFX-DC
+      hostname: esxi-07.interfarmax.local

@@ -1,0 +1,20 @@
+---
+- hosts: testservers
+  remote_user: root
+
+  tasks:
+  - name: Remove repository
+    apt_repository: repo='deb-src http://repo.zabbix.com/zabbix/2.4/debian jessie main' state=absent
+  - name: Remove zabbix-agent
+    apt: name="zabbix-agent*" state=absent update_cache=yes
+    sudo: yes
+  - name: Send email notification
+    local_action: mail
+       host='10.12.1.7'
+       port=25
+       username=ansible
+       password='ifxansi'
+       from=ansible@interfarmax.by
+       to=is-admins@interfarmax.by
+       subject="Ansible report"
+       body="Task to remove zabbix-agent and repository on {{ ansible_hostname }} is compleated!"
