@@ -10,11 +10,11 @@
     sudo: yes
   - name: Send email notification
     local_action: mail
-       host='10.12.1.7'
+       host='ip'
        port=25
        username=ansible
-       password='ifxansi'
-       from=ansible@interfarmax.by
-       to=is-admins@interfarmax.by
+       password=''
+       from=ansible@test.local
+       to=is-admins@test.local
        subject="Ansible report"
        body="Task to remove zabbix-agent and repository on {{ ansible_hostname }} is compleated!"

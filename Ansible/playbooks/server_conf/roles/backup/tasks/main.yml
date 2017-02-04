@@ -8,12 +8,12 @@
   file: path=/mnt/backup state=directory
 
 - name: test fstab if exists mountpoint string
-  shell: grep "^//srv-bac-01/Compression" /etc/fstab
+  shell: grep "^//ip/Compression" /etc/fstab
   register: fstab_grep
   ignore_errors: True
 
 - name: add mount data to /etc/fstab
-  lineinfile: dest=/etc/fstab line="//srv-bac-01/Compression /mnt/backup cifs   rw,credentials=/home/smbcredentials,iocharset=utf8      0       0"  
+  lineinfile: dest=/etc/fstab line="//ip/Compression /mnt/backup cifs   rw,credentials=/home/smbcredentials,iocharset=utf8      0       0"  
   when: fstab_grep.stdout == ""
 
 - name: restart machine
@@ -46,19 +46,3 @@
 #    - tag1
 #  local_action: command echo "aaaaaaaaaa" >> /home/321.txt
 #  delegate_to: localhost
- 
-#"Client {
-#  Name = srv-bac-02-fd
-#  Password = quakequake
-#  Address = 10.12.1.13
-#  FDPort = 9102
-#  Catalog = MyCatalog
-#  File Retention = 30 days
-#  Job Retention = 2 months
-#  }" > /etc/ansible/playbooks/server_conf/roles/backup/files/clients.conf 
-
-#- name: add job to bacula jobs file
-
-#- name: create cron task to backup /etc
-#  cron: name="backup settings" minute="10" hour="21" job="/bin/tar -cf /mnt/backup/{{ ansible_hostname }}/$(date '+%d-%b-%Y').tar /etc"
-

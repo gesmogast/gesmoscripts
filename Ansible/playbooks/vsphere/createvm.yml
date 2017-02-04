@@ -8,9 +8,9 @@
   - hosts: vmware
 
   - vsphere_guest:
-    vcenter_hostname: srv-vcenter-01.interfarmax.local
-    username: azbirovskiy
-    password: SENbonsakura99
+    vcenter_hostname: vsphere-name
+    username: username
+    password: password
     guest: testvm-deb
     state: powered_on
     vm_extra_config:
@@ -41,5 +41,5 @@
         type: "iso"
         iso_path: "Dis1/debian-8.6.0-amd64-netinst.iso"
     esxi:
-      datacenter: IFX-DC
-      hostname: esxi-07.interfarmax.local
+      datacenter: DC
+      hostname: esxi.test.local

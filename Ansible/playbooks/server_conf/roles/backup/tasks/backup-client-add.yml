@@ -10,7 +10,7 @@
       block: |
         Client {
         Name = {{ backup_hostname }}-fd
-        Password = quakequake
+        Password = password
         Address = {{ backup_ipaddress }}
         FDPort = 9102
   	Catalog = MyCatalog
