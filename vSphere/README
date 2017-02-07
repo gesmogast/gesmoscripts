@@ -1,0 +1,3 @@
+Scripts to work with vSphere API
+py-vsphere-check-snapshots.py  - check vSphere if there are a live snapshots on running VMs.
+py-vsphere-get-report-vms.py - iterate all running VM's and generate email report about all VMs.
