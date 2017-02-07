@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script installs Magento2 on Debian8 system
 PASSWORD='septimo'
 HOSTNAME='testmagento.org'
 IP=`ip addr show | grep global | awk '{print $2}' | cut -d "/" -f1`
@@ -70,4 +71,5 @@ echo "Installing Magento2"
 echo "Configuring website permissions"
 chmod 700 /var/www/magento/app/etc
 chown -R www-data:www-data /var/www/magento
+echo "Restarting nginx"
 service nginx restart
