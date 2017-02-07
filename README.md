@@ -1,2 +1,2 @@
 # gesmoscripts
-Scripts
+Python and bash scripts
