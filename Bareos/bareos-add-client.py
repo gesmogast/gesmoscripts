@@ -20,7 +20,7 @@ def backup_host():
 	# Add clients configuration
 	template_client = """Client {
   Name = %s
-  Password = quakequake
+  Password = password
   Address = %s
   FDPort = 9102
   Catalog = MyCatalog
@@ -48,7 +48,7 @@ def backup_host():
   Name = %s
   Address = 10.12.1.111
   SDPort = 9103
-  Password = quakequake
+  Password = password
   Device = Backup%s
   Media Type = File
   Maximum Concurrent Jobs = 1
@@ -149,15 +149,14 @@ def backup_vm():
 	Options {
 		signature = MD5
 	}
-	Plugin = "python:module_path=/usr/lib/bareos/plugins/vmware_plugin:module_name=bareos-fd-vmware:dc=IFX-DC:folder=/:vmname=%s:vcserver=srv-vcenter-01.interfarmax.local:vcuser=bareos:vcpass=IFXnet314bac!"
-  }
+	Plugin = "python:module_path=/usr/lib/bareos/plugins/vmware_plugin:module_name=bareos-fd-vmware:dc=DC:folder=/:vmname=%s:vcserver=vcenter.test.local:vcuser=admin:vcpass=password}
 }
 	""" % (backup_client_name,backup_client_name)
 	template_storage= """Storage {
   Name = Backup%s
   Address = <director ip>
   SDPort = 9103
-  Password = quakequake
+  Password = password
   Device = Backup%s
   Media Type = File
   Maximum Concurrent Jobs = 1
