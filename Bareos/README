@@ -1,0 +1,8 @@
+Bunch of scripts to make life easier when using Bareos backup system.
+
+Bareos-add-client.py - interactive script to add clients to backup system.
+Bareos-del-client.py - interactive script to delete clients out of backup system.
+Bareos-install.sh - script to install bareos and PostgreSQL database.
+make_catalog_backup.pl - script to make dump of bareos catalogs.
+remove_missing_volumes.sh and remove_purged_volumes.sh - useful to cleanup catalog and fileserver from missing\old backups.
+send_bacula_backup_report.pl - script to send daily\weekly reports about compleated backups.
