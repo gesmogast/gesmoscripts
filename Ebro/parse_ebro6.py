@@ -46,4 +46,4 @@ with closing(Firefox()) as browser:
           f.write(encode_string)
      f.close()
     # copy this output file to remote zabbix system with scp
-     os.system("scp /home/interfarmax/ebro_output.txt root@ip:/home/ebro/ebro_output.txt")
+     os.system("scp /home/ebro_output.txt root@ip:/home/ebro/ebro_output.txt")
