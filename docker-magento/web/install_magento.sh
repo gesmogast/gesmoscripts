@@ -15,7 +15,6 @@ LC_ALL=en_US.UTF-8 add-apt-repository ppa:ondrej/php
 apt-key adv --recv-keys --keyserver hkp://keyserver.ubuntu.com:80 0xcbcb082a1bb943db
 echo "Installing php7"
 apt-get install php7.0-fpm php7.0-mcrypt php7.0-curl php7.0-cli php7.0-mysql php7.0-gd php7.0-xsl php7.0-json php7.0-intl php-pear php7.0-dev php7.0-common php7.0-mbstring php7.0-zip php-soap libcurl3 curl -y
-
 curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/bin/composer
 mkdir -p /var/www
@@ -33,31 +32,5 @@ rm /etc/nginx/sites-enabled/default
 echo "Install nginx magento config"
 cp magento.conf /etc/nginx/sites-available/
 ln -s /etc/nginx/sites-available/magento.conf /etc/nginx/sites-enabled/
-echo "Restarting nginx"
-service nginx restart
-echo "Installing Magento2"
-
-/var/www/magento/bin/magento setup:install --backend-frontname="admin" \
---key="biY8vdWx4w8KV5Q59380Fejy36l6ssUb" \
---db-host="localhost" \
---db-name="magentodb" \
---db-user="magento" \
---db-password="septimo" \
---language="en_US" \
---currency="USD" \
---timezone="America/New_York" \
---use-rewrites=1 \
---use-secure=0 \
---base-url="http://testmagento.org" \
---base-url-secure="https://testmagento.org" \
---admin-user=admin \
---admin-password=ABCdefg123! \
---admin-email=admin@testmagento.org \
---admin-firstname=admin \
---admin-lastname=user \
---cleanup-database
-echo "Configuring website permissions"
-chmod 700 /var/www/magento/app/etc
-chown -R www-data:www-data /var/www/magento
 echo "Restarting nginx"
 service nginx restart
