@@ -30,7 +30,7 @@ echo "Removing default nginx configuration"
 rm /etc/nginx/sites-available/default
 rm /etc/nginx/sites-enabled/default
 echo "Install nginx magento config"
-cp magento.conf /etc/nginx/sites-available/
+cp ~/gesmoscripts/docker-magento/web/magento.conf /etc/nginx/sites-available/
 ln -s /etc/nginx/sites-available/magento.conf /etc/nginx/sites-enabled/
 echo "Restarting nginx"
 service nginx restart
