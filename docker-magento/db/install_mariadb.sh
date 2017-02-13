@@ -2,7 +2,7 @@
 # This script installs Magento2 on Ubuntu1404 system
 PASSWORD='septimo'
 echo "Adding mariadb repository"
-add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.1/ubuntu $
+add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.1/ubuntu trusty main'
 apt-get update
 echo "Installing mariadb"
 export DEBIAN_FRONTEND="noninteractive"
