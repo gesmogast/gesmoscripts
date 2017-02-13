@@ -2,7 +2,7 @@
 # This script installs Magento2 on Ubuntu1404 system
 PASSWORD='septimo'
 echo "Adding mariadb repository"
-apt-get install software-properties-common
+apt-get install software-properties-common -y
 add-apt-repository 'deb [arch=amd64,i386,ppc64el] http://ftp.hosteurope.de/mirror/mariadb.org/repo/10.1/ubuntu trusty main'
 apt-get update
 echo "Installing mariadb"
