@@ -16,6 +16,4 @@ apt-get install mariadb-server mariadb-client -y
 echo "Changing my.cnf to listen 0.0.0.0:3306"
 sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
 echo "Configuration of Mariadb"
-mysql -u root -p"$PASSWORD" < magentoinstall.sql
-echo "Start mariadb"
-/usr/bin/mysqld_safe
+mysql -u root -p"$PASSWORD" < /gesmoscripts/docker-magento/db/magentoinstall.sql
