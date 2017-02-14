@@ -3,7 +3,7 @@
 - name: add client to bacula clients file
   lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Client {"
   lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Name = {{ backup_hostname }}-fd"
-  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Password = quakequake"
+  lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Password = password"
   lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Address = {{ backup_ipaddress }}"
   lineinfile: dest=/etc/bacula/conf.d/clients.conf line="FDPort = 9102"
   lineinfile: dest=/etc/bacula/conf.d/clients.conf line="Catalog = MyCatalog"
